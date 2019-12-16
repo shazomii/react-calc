@@ -1,49 +1,49 @@
 import React, { Component } from 'react';
-import Highscore from './Highscore';
+import Button from './components/Buttons';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0,
-      overTen: false
+      current: '0',
+      previous: []
     }
   }
 
-  handleUpClick = () => {
-    this.setState({ count: this.state.count + 1 })
+  reset = () => {
+    this.setState({ result: '0' })
   }
 
-  handleDownClick = () => {
-    this.setState({ count: this.state.count - 1 })
-  }
-
-  onReset = () => {
-    this.setState({
-      count: 0,
-      overTen: false
-    })
-  }
-
-  componentDidUpdate(props, state) {
-    if (this.state.count > 10 && this.state.count !== state.count && !this.state.overTen) {
-      this.setState({ overTen: true })
-      console.log('updating count over ten')
-    }
-
+  addToCurrent = (symbol) => {
+    this.setState({ current: this.state.current + symbol });
   }
 
   render() {
-    const { count, overTen } = this.state;
-    const { handleUpClick, handleDownClick, onReset } = this;
+    const buttons = [
+      { symbol: 'C', cols: 3, actions: this.reset },
+      { symbol: '/', cols: 1, actions: this.addToCurrent },
+      { symbol: '7', cols: 1, acions: this.addToCurrent },
+      { symbol: '8', cols: 1, actions: this.addToCurrent },
+      { symbol: '9', cols: 1, actions: this.addToCurrent },
+      { symbol: 'X', cols: 1, actions: this.addToCurrent },
+      { symbol: '4', cols: 1, actions: this.addToCurrent },
+      { symbol: '5', cols: 1, actions: this.addToCurrent },
+      { symbol: '6', cols: 1, actions: this.addToCurrent },
+      { symbol: '-', cols: 1, actions: this.addToCurrent },
+      { symbol: '1', cols: 1, actions: this.addToCurrent },
+      { symbol: '2', cols: 1, actions: this.addToCurrent },
+      { symbol: '3', cols: 1, actions: this.addToCurrent },
+      { symbol: '+', cols: 1, actions: this.addToCurrent },
+      { symbol: '0', cols: 1, actions: this.addToCurrent },
+      { symbol: '.', cols: 1, actions: this.addToCurrent },
+      { symbol: '=', cols: 2, actions: this.addToCurrent },
+    ]
     return (
-      <div>
-        <h1>Button clicked {count} times</h1>
-        <Highscore
-          overTen={overTen}
-          onReset={onReset} />
-        <button onClick={() => handleUpClick()}>Click Up</button>
-        <button onClick={() => handleDownClick()}>Click Down</button>
+      <div className='App'>
+        <input className='result' type='text' value={this.state.current} />
+        {buttons.map((btn, i) => {
+          return <Button symbol={btn.symbol} cols={btn.cols} action={(symbol) => btn.action} />
+        })}
       </div>
     )
   }
